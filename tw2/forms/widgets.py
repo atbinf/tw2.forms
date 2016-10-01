@@ -39,19 +39,19 @@ class InputField(FormField):
 
     value = twc.Param(attribute=True)
 
-    required = twc.Param('Input field is required',
-        attribute=True, default=None)
+#    required = twc.Param('Input field is required',
+#        attribute=True, default=None)
 
     autofocus = twc.Param('Autofocus form field (HTML5 only)',
         attribute=True, default=None)
 
     template = "tw2.forms.templates.input_field"
 
-    def prepare(self):
-        super(InputField, self).prepare()
-        self.safe_modify('attrs')
-        self.attrs['required'] = 'required' if self.required in [True, 'required'] else None
-        self.required = None  # Needed because self.required would otherwise overwrite self.attrs['required'] again
+#    def prepare(self):
+#        super(InputField, self).prepare()
+#        self.safe_modify('attrs')
+#        self.attrs['required'] = 'required' if self.required in [True, 'required'] else None
+#        self.required = None  # Needed because self.required would otherwise overwrite self.attrs['required'] again
 
 
 class PostlabeledInputField(InputField):
@@ -731,7 +731,7 @@ class StripBlanks(twc.Validator):
             return bool(val)
 
     def to_python(self, value, state=None):
-        return [v for v in value if self.any_content(v)]
+        return [v for v in value or [] if self.any_content(v)]
 
 
 class GridLayout(twc.RepeatingWidget):
