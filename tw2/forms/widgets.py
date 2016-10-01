@@ -36,7 +36,7 @@ class TextFieldMixin(twc.Widget):
 
 class InputField(FormField):
     """A generic <input> field.
-    
+
     Generally you won't use this one, but will rely
     on one of its specialised subclasses like :class:`.TextField`
     or :class:`Checkbox`.
@@ -47,19 +47,19 @@ class InputField(FormField):
 
     value = twc.Param(attribute=True)  #: Current value of the input
 
-    required = twc.Param('Input field is required',
-        attribute=True, default=None)  #: Add required attributed to the input.
+    # required = twc.Param('Input field is required',
+    #     attribute=True, default=None)  #: Add required attributed to the input.
 
     autofocus = twc.Param('Autofocus form field (HTML5 only)',
         attribute=True, default=None)  #: Add autofocus attributed to the input.
 
     template = "tw2.forms.templates.input_field"
 
-    def prepare(self):
-        super(InputField, self).prepare()
-        self.safe_modify('attrs')
-        self.attrs['required'] = 'required' if self.required in [True, 'required'] else None
-        self.required = None  # Needed because self.required would otherwise overwrite self.attrs['required'] again
+#    def prepare(self):
+#        super(InputField, self).prepare()
+#        self.safe_modify('attrs')
+#        self.attrs['required'] = 'required' if self.required in [True, 'required'] else None
+#        self.required = None  # Needed because self.required would otherwise overwrite self.attrs['required'] again
 
 
 class PostlabeledInputField(InputField):
@@ -85,8 +85,8 @@ class TextArea(TextFieldMixin, FormField):
 
 
 class CheckBox(InputField):
-    """A single checkbox. 
-    
+    """A single checkbox.
+
     Its value will be True or Folse if selected or not."""
     type = "checkbox"
     validator = twc.BoolValidator
