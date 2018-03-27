@@ -38,7 +38,7 @@ setup(
     name='tw2.forms',
     version='2.2.2',
     description='The basic form widgets for ToscaWidgets 2, a web widget toolkit.',
-    long_description=open('README.rst').read().split('\n\n', 1)[1],
+    long_description='',
     author='Paul Johnston, Christopher Perkins, Alberto Valverde Gonzalez & contributors',
     author_email='toscawidgets-discuss@googlegroups.com',
     url="http://toscawidgets.org/",
