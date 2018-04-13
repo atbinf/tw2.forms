@@ -30,6 +30,8 @@ class TextFieldMixin(twc.Widget):
         attribute=True, default=None)
     placeholder = twc.Param('Placeholder text (HTML5 only)',
         attribute=True, default=None)
+    autofocus = twc.Param('Autofocus form field (HTML5 only)',
+        attribute=True, default=None)
 
 
 class InputField(FormField):
@@ -41,9 +43,6 @@ class InputField(FormField):
 
 #    required = twc.Param('Input field is required',
 #        attribute=True, default=None)
-
-    autofocus = twc.Param('Autofocus form field (HTML5 only)',
-        attribute=True, default=None)
 
     template = "tw2.forms.templates.input_field"
 
