@@ -16,7 +16,8 @@ class FormField(twc.Widget):
         attribute=True,
         default=property(lambda s: hasattr(s, 'compound_key') and s.compound_key or s.compound_id)
     )
-
+    autofocus = twc.Param('Autofocus form field (HTML5 only)',
+        attribute=True, default=None)
     @property
     def required(self):
         return self.validator and (
@@ -30,9 +31,6 @@ class TextFieldMixin(twc.Widget):
         attribute=True, default=None)
     placeholder = twc.Param('Placeholder text (HTML5 only)',
         attribute=True, default=None)
-    autofocus = twc.Param('Autofocus form field (HTML5 only)',
-        attribute=True, default=None)
-
 
 class InputField(FormField):
     type = twc.Variable('Type of input field',
