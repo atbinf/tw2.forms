@@ -18,6 +18,9 @@ class FormField(twc.Widget):
         default=property(lambda s: hasattr(s, 'compound_key') and s.compound_key or s.compound_id)
     )  #: Name of the field
 
+    autofocus = twc.Param('Autofocus form field (HTML5 only)',
+        attribute=True, default=None)  #: Add autofocus attributed to the input.
+
     @property
     def required(self):
         """If the field is required according to its validator (read-only)"""
@@ -49,9 +52,6 @@ class InputField(FormField):
 
     # required = twc.Param('Input field is required',
     #     attribute=True, default=None)  #: Add required attributed to the input.
-
-    autofocus = twc.Param('Autofocus form field (HTML5 only)',
-        attribute=True, default=None)  #: Add autofocus attributed to the input.
 
     template = "tw2.forms.templates.input_field"
 
