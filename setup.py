@@ -11,8 +11,13 @@ except:
 # Requirements to install buffet plugins and engines
 _extra_genshi = ["Genshi >= 0.3.5"]
 _extra_mako = ["Mako >= 0.1.1"]
-_extra_jinja = ["Jinja2"]
 _extra_kajiki = ["Kajiki >= 0.5.5"]
+
+if sys.version_info[0:2] < (3, 6):
+    _extra_jinja = ["jinja2 < 3.0"]
+else:
+    _extra_jinja = ["jinja2"]
+
 
 requires = [
     "tw2.core>=2.1.4",
@@ -37,9 +42,9 @@ if sys.version_info[0] < 3:
 
 setup(
     name='tw2.forms',
-    version='2.2.5',
+    version='2.2.6',
     description='The basic form widgets for ToscaWidgets 2, a web widget toolkit.',
-    long_description=open('README.rst').read().split('\n\n', 1)[1],
+    long_description='',
     author='Paul Johnston, Christopher Perkins, Alberto Valverde Gonzalez & contributors',
     author_email='toscawidgets-discuss@googlegroups.com',
     url="http://toscawidgets.org/",
