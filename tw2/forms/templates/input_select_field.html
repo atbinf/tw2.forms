@@ -1,0 +1,7 @@
+<input xmlns:py="http://genshi.edgewall.org/" py:attrs="w.attrs" list="identifiers">
+    <datalist id="identifiers">
+        <py:for each="identifier in w.options">
+            <option value="${identifier}"/>
+        </py:for>
+    </datalist>
+</input>

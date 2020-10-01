@@ -1,14 +1,15 @@
-import tw2.core as twc
-import itertools
-import webob
 import cgi
+import itertools
 import math
+
 import six
+import tw2.core as twc
+import webob
 
 
-#--
+# --
 # Basic Fields
-#--
+# --
 class FormField(twc.Widget):
     """Basic Form Widget from which each other field will inherit"""
     name = twc.Variable(
@@ -19,7 +20,7 @@ class FormField(twc.Widget):
     )  #: Name of the field
 
     autofocus = twc.Param('Autofocus form field (HTML5 only)',
-        attribute=True, default=None)  #: Add autofocus attributed to the input.
+                          attribute=True, default=None)  #: Add autofocus attributed to the input.
 
     @property
     def required(self):
@@ -32,9 +33,9 @@ class FormField(twc.Widget):
 class TextFieldMixin(twc.Widget):
     '''Misc mixin class with attributes for textual input fields'''
     maxlength = twc.Param('Maximum length of field',
-        attribute=True, default=None)  #: Maximum length of the field
+                          attribute=True, default=None)  #: Maximum length of the field
     placeholder = twc.Param('Placeholder text (HTML5 only)',
-        attribute=True, default=None)  #: Placeholder text, until user writes something.
+                            attribute=True, default=None)  #: Placeholder text, until user writes something.
 
 
 class InputField(FormField):
@@ -55,11 +56,19 @@ class InputField(FormField):
 
     template = "tw2.forms.templates.input_field"
 
+
 #    def prepare(self):
 #        super(InputField, self).prepare()
 #        self.safe_modify('attrs')
 #        self.attrs['required'] = 'required' if self.required in [True, 'required'] else None
 #        self.required = None  # Needed because self.required would otherwise overwrite self.attrs['required'] again
+
+class InputSelectField(FormField):
+    value = twc.Param(attribute=True)
+
+    template = "tw2.forms.templates.input_select_field"
+    type = 'text'
+    options = twc.Param('Options to be displayed')
 
 
 class PostlabeledInputField(InputField):
@@ -206,6 +215,7 @@ class IgnoredField(HiddenField):
     """
     A hidden field. The value is never included in validated data.
     """
+
     def _validate(self, value):
         super(IgnoredField, self)._validate(value)
         return twc.EmptyField
@@ -243,9 +253,9 @@ class LinkField(twc.Widget):
 
         if '$' in self.text:
             self.text = \
-                    self.value and \
-                    self.text.replace('$', six.text_type(self.value)) or \
-                    ''
+                self.value and \
+                self.text.replace('$', six.text_type(self.value)) or \
+                ''
 
 
 class Button(InputField):
@@ -286,9 +296,9 @@ class ImageButton(twc.Link, InputField):
         self.attrs['src'] = self.src  # TBD: hack!
 
 
-#--
+# --
 # HTML5 Mixins
-#--
+# --
 
 class HTML5PatternMixin(twc.Widget):
     '''HTML5 mixin for input field regex pattern matching
@@ -298,9 +308,9 @@ class HTML5PatternMixin(twc.Widget):
     TODO: Configure server-side validator
     '''
     pattern = twc.Param('JavaScript regex to match field with',
-        attribute=True, default=None)
+                        attribute=True, default=None)
     title = twc.Param('Tooltip and message shown on invalid value',
-        attribute=True, default=None)
+                      attribute=True, default=None)
 
 
 class HTML5MinMaxMixin(twc.Widget):
@@ -309,15 +319,15 @@ class HTML5MinMaxMixin(twc.Widget):
     TODO: Configure server-side validator
     '''
     min = twc.Param('Minimum value for field',
-        attribute=True, default=None)
+                    attribute=True, default=None)
     max = twc.Param('Maximum value for field',
-        attribute=True, default=None)
+                    attribute=True, default=None)
 
 
 class HTML5StepMixin(twc.Widget):
     '''HTML5 mixin for input field step size'''
     step = twc.Param('The step size between numbers',
-        attribute=True, default=None)
+                     attribute=True, default=None)
 
 
 class HTML5NumberMixin(HTML5MinMaxMixin, HTML5StepMixin):
@@ -325,9 +335,9 @@ class HTML5NumberMixin(HTML5MinMaxMixin, HTML5StepMixin):
     pass
 
 
-#--
+# --
 # HTML5 Fields
-#--
+# --
 
 class EmailField(TextField):
     '''An email input field (HTML5 only).
@@ -379,9 +389,9 @@ class ColorField(TextField):
     type = 'color'
 
 
-#--
+# --
 # Selection fields
-#--
+# --
 class SelectionField(FormField):
     """
     Base class for single and multiple selection fields.
@@ -405,7 +415,8 @@ class SelectionField(FormField):
     That is no longer the case.
     """
 
-    options = twc.Param('Options to be displayed')  #: List of options to pick from in the form ``[(id, text), (id, text), ...]``
+    options = twc.Param(
+        'Options to be displayed')  #: List of options to pick from in the form ``[(id, text), (id, text), ...]``
     prompt_text = twc.Param('Text to prompt user to select an option.',
                             default=None)  #: Prompt to display when no option is selected. Set to ``None`` to disable this.
 
@@ -424,7 +435,7 @@ class SelectionField(FormField):
             opts = []
             group = isinstance(optgroup[1], (list, tuple))
             for option in self._iterate_options(
-                group and optgroup[1] or [optgroup]):
+                    group and optgroup[1] or [optgroup]):
 
                 if len(option) is 2:
                     option_attrs = {}
@@ -639,9 +650,9 @@ class VerticalCheckBoxTable(VerticalSelectionTable):
     multiple = True
 
 
-#--
+# --
 # Layout widgets
-#--
+# --
 class BaseLayout(twc.CompoundWidget):
     """
     The following CSS classes are used, on the element containing
@@ -718,7 +729,7 @@ class RowLayout(BaseLayout):
     """
     resources = [twc.Link(id='error', modname='tw2.forms',
                           filename='static/dialog-warning.png'),
-                ]
+                 ]
     template = "tw2.forms.templates.row_layout"
 
     def prepare(self):
@@ -816,7 +827,7 @@ class Form(twc.DisplayOnlyWidget):
                         'bottom of the form',
                         default=[])
     novalidate = twc.Param('Turn off HTML5 form validation',
-        attribute=True, default=None)
+                           attribute=True, default=None)
 
     attrs = {'enctype': 'multipart/form-data'}
     id_suffix = 'form'
@@ -850,7 +861,7 @@ class Form(twc.DisplayOnlyWidget):
             raise AttributeError("buttons parameter must be a list or None")
 
         if self.submit and not \
-        ['SubmitButton' in repr(b) for b in self.buttons]:
+                ['SubmitButton' in repr(b) for b in self.buttons]:
             self.buttons.append(self.submit)
 
         for b in self.buttons:
